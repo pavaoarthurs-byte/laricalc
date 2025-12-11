@@ -95,7 +95,7 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
               ?
             </div>
             <p className="text-sm text-green-700 font-cute mb-3 text-center leading-relaxed">
-              "A regra diz: se os dígitos finais forem > 55, a gente arredonda pra cima!"
+              "A regra diz: se os dígitos finais forem &gt; 55, a gente arredonda pra cima!"
             </p>
             
             {/* Formula box with Tooltip */}
