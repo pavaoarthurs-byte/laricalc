@@ -1,0 +1,5 @@
+{
+  "name": "SimplesCalc Fiscal",
+  "description": "Aplicativo de cálculo fiscal para Simples Nacional (Anexo I), focado na Alíquota Efetiva (ALIQ1) e Percentual de Redução (PR) com regras específicas de arredondamento.",
+  "requestFramePermissions": []
+}
