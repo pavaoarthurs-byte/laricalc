@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Tabs } from './components/Tabs';
 import { Aliq1Tab } from './components/Aliq1Tab';
 import { PgdasTab } from './components/PgdasTab';
+import { MusicPlayer } from './components/MusicPlayer';
 import { calcularAliq1 } from './utils/taxCalculations';
 
 // Ícone Folha (Animal Crossing vibe)
@@ -32,6 +33,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 sm:p-6">
+      <MusicPlayer />
       
       {/* Main Card */}
       <div className="w-full max-w-2xl bg-white rounded-[40px] shadow-xl border-8 border-white outline outline-4 outline-pink-200 relative overflow-visible">

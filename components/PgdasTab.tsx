@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { 
   arredondamentoPersonalizado, 
   obterAliq2, 
@@ -12,6 +12,7 @@ interface PgdasTabProps {
 }
 
 export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal }) => {
+  const [copied, setCopied] = useState(false);
   
   const calculos = useMemo(() => {
     const aliq1Pct = aliq1DecimalOriginal * 100;
@@ -29,6 +30,14 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
 
   const { aliq1ArredondadaPct, aliq2Pct, prCalculado } = calculos;
   const faixaAliq2 = TABELA_ALIQ2.find(f => rbt12 <= f.limite);
+
+  const finalValue = isNaN(prCalculado) || !isFinite(prCalculado) ? '0.00' : prCalculado.toFixed(2);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(finalValue);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="space-y-6 animate-fade-in relative z-10">
@@ -128,13 +137,36 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
           </h2>
           
           <div className="font-cute text-6xl sm:text-7xl font-bold text-white drop-shadow-md my-4">
-            {isNaN(prCalculado) || !isFinite(prCalculado) ? '0.00' : prCalculado.toFixed(2)}%
+            {finalValue}%
           </div>
-          
-          <div className="bg-white/80 rounded-xl p-3 inline-block mt-2">
-            <p className="font-bold text-green-600 text-sm">
-              Prontinho! É só usar no PGDAS.
-            </p>
+
+          <div className="flex justify-center mt-2">
+            <button
+                onClick={handleCopy}
+                className={`
+                  flex items-center gap-2 px-4 py-2 rounded-full font-cute text-sm transition-all duration-300 shadow-sm
+                  ${copied 
+                    ? 'bg-green-300 text-white shadow-inner scale-95' 
+                    : 'bg-white text-green-600 hover:bg-green-50 hover:scale-105'
+                  }
+                `}
+            >
+                {copied ? (
+                   <>
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                       <path fillRule="evenodd" d="M19.916 4.626a.75.75 0 01.208 1.04l-9 13.5a.75.75 0 01-1.154.114l-6-6a.75.75 0 011.06-1.06l5.353 5.353 8.493-12.739a.75.75 0 011.04-.208z" clipRule="evenodd" />
+                     </svg>
+                     <span>Copiado!</span>
+                   </>
+                ) : (
+                   <>
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                        <path d="M7.5 3.375c0-1.036.84-1.875 1.875-1.875h.375a3.75 3.75 0 017.5 0h.375C18.66 1.5 19.5 2.34 19.5 3.375v17.25c0 1.035-.84 1.875-1.875 1.875H7.5A1.875 1.875 0 015.625 20.625V3.375zm1.5-.375c0-.621.504-1.125 1.125-1.125h.375a2.25 2.25 0 014.5 0h.375c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125h-6c-.621 0-1.125-.504-1.125-1.125v-1.5z" />
+                     </svg>
+                     <span>Copiar Valor</span>
+                   </>
+                )}
+            </button>
           </div>
         </div>
       </div>
