@@ -128,7 +128,7 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
               </span>
               
               <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-48 bg-white border-2 border-pink-200 text-pink-500 text-xs rounded-xl p-2 opacity-0 group-hover/aliq1r:opacity-100 transition-all duration-300 pointer-events-none z-50 text-center shadow-lg font-cute invisible group-hover/aliq1r:visible">
-                Valor arredondado (Regra >55) usado no <b>Denominador</b> da fórmula.
+                Valor arredondado (Regra &gt;55) usado no <b>Denominador</b> da fórmula.
                 <div className="absolute top-full left-1/2 transform -translate-x-1/2 border-8 border-transparent border-t-pink-200"></div>
               </div>
             </div>
@@ -203,7 +203,7 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
                 </div>
                 <div className="text-[11px] leading-tight text-gray-500 space-y-1">
                     <p>
-                        <strong>Regra (>55):</strong> Verifica-se a 3ª e 4ª casa decimal.
+                        <strong>Regra (&gt;55):</strong> Verifica-se a 3ª e 4ª casa decimal.
                     </p>
                     <p className="flex justify-center items-center gap-2">
                         Dígitos verificadores: 
