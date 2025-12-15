@@ -178,7 +178,7 @@ export const PgdasTab: React.FC<PgdasTabProps> = ({ rbt12, aliq1DecimalOriginal 
 
       {/* Resultado Final */}
       <div className="mt-8">
-        <div className="bg-gradient-to-b from-green-100 to-green-200 rounded-[32px] p-8 text-center shadow-lg border-4 border-white outline outline-2 outline-green-300 relative transition-transform duration-300 hover:scale-[1.01] z-30">
+        <div className="bg-gradient-to-b from-green-100 to-green-200 rounded-[32px] p-8 text-center shadow-lg border-4 border-white outline outline-2 outline-green-300 relative transition-transform duration-300 hover:scale-[1.01] z-30 flex flex-col items-center justify-center">
           
           <div className="absolute top-4 left-4 text-2xl animate-bounce" style={{ animationDuration: '3s' }}>🍃</div>
           <div className="absolute bottom-4 right-4 text-2xl animate-bounce" style={{ animationDuration: '4s' }}>🔔</div>
