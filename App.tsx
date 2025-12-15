@@ -3,6 +3,7 @@ import { Tabs } from './components/Tabs';
 import { Aliq1Tab } from './components/Aliq1Tab';
 import { PgdasTab } from './components/PgdasTab';
 import { MusicPlayer } from './components/MusicPlayer';
+import { SleepScreen } from './components/SleepScreen';
 import { calcularAliq1 } from './utils/taxCalculations';
 
 // Ícone Folha (Animal Crossing vibe)
@@ -25,14 +26,94 @@ function App() {
   const [activeTab, setActiveTab] = useState<'tab1' | 'tab2'>('tab1');
   const [rbt12, setRbt12] = useState<number>(0);
   const [aliq1Decimal, setAliq1Decimal] = useState<number>(0);
+  
+  // Estado para modo de repouso
+  const [isSleeping, setIsSleeping] = useState(false);
+  const IDLE_TIMEOUT_MS = 300000; // 5 minutos
 
+  // Cálculo reativo
   useEffect(() => {
     const novoAliq1 = calcularAliq1(rbt12);
     setAliq1Decimal(novoAliq1);
   }, [rbt12]);
 
+  // Lógica de Idle Timer (Inatividade)
+  useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const goSleep = () => {
+      setIsSleeping(true);
+    };
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      // Só inicia o countdown se NÃO estiver dormindo
+      if (!isSleeping) {
+        timeoutId = setTimeout(goSleep, IDLE_TIMEOUT_MS);
+      }
+    };
+
+    const handleInteraction = () => {
+      // Se estiver dormindo, IGNORAMOS interações globais.
+      // O despertar deve vir EXCLUSIVAMENTE do componente SleepScreen via onWakeUp.
+      if (isSleeping) {
+        return; 
+      }
+      // Se estiver acordado, reinicia o timer
+      resetTimer();
+    };
+
+    // Eventos que resetam o timer se estiver acordado
+    window.addEventListener('mousedown', handleInteraction);
+    window.addEventListener('keypress', handleInteraction);
+    window.addEventListener('scroll', handleInteraction);
+    window.addEventListener('touchstart', handleInteraction);
+    window.addEventListener('click', handleInteraction);
+
+    // Iniciar timer apenas se estiver acordado
+    if (!isSleeping) {
+      resetTimer();
+    }
+
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('mousedown', handleInteraction);
+      window.removeEventListener('keypress', handleInteraction);
+      window.removeEventListener('scroll', handleInteraction);
+      window.removeEventListener('touchstart', handleInteraction);
+      window.removeEventListener('click', handleInteraction);
+    };
+  }, [isSleeping]);
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4 sm:p-6">
+      
+      {/* Definição de Animações Personalizadas (Heartbeat & Cat Wiggle) */}
+      <style>{`
+        @keyframes heartBeat {
+          0%, 100% { transform: scale(1); }
+          14% { transform: scale(1.3); }
+          28% { transform: scale(1); }
+          42% { transform: scale(1.3); }
+          70% { transform: scale(1); }
+        }
+        @keyframes catWiggle {
+          0%, 100% { transform: rotate(-5deg) translateY(0); }
+          50% { transform: rotate(5deg) translateY(-4px); }
+        }
+        .animate-heart-custom {
+          animation: heartBeat 1.5s ease-in-out infinite;
+          display: inline-block;
+        }
+        .animate-cat-custom {
+          animation: catWiggle 2.5s ease-in-out infinite;
+          display: inline-block;
+        }
+      `}</style>
+
+      {/* Tela de Repouso (Screensaver) */}
+      {isSleeping && <SleepScreen onWakeUp={() => setIsSleeping(false)} />}
+
       <MusicPlayer />
       
       {/* Main Card */}
@@ -88,7 +169,9 @@ function App() {
         {/* Footer */}
         <div className="bg-green-100 rounded-b-[32px] py-4 text-center border-t-4 border-dashed border-green-300">
           <p className="text-green-600 font-cute text-sm flex justify-center items-center gap-2">
-            <span>❤️</span> Feito com carinho pra minha gatinha <span>🐱</span>
+            <span className="animate-heart-custom">❤️</span> 
+            Feito com carinho pra minha gatinha 
+            <span className="animate-cat-custom ml-1">🐱</span>
           </p>
         </div>
       </div>

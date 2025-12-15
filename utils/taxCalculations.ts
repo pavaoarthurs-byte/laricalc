@@ -64,7 +64,7 @@ export const calcularAliq1 = (rbt12: number): number => {
   const termo3 = termo2 / rbt12;
   const aliq1Decimal = termo3 * faixa.reparticao;
 
-  return aliq1Decimal; // Retorna com precisão total
+  return aliq1Decimal; // Retorna com precisão total (ratio 0.xxxx)
 };
 
 // 4.5 Regra de Arredondamento Personalizado
@@ -74,7 +74,6 @@ export const arredondamentoPersonalizado = (valor: number): number => {
   // Estratégia: Usar string para evitar erros de ponto flutuante na detecção dos dígitos
   // Ex: 3.4556 -> "3.4556"
   
-  const casasDecimais = 4; // Precisamos olhar até a 4ª casa para a regra
   // Converte para string com casas suficientes fixas para análise
   const valStr = valor.toFixed(10); 
   const parts = valStr.split('.');
@@ -109,12 +108,20 @@ export const obterAliq2 = (rbt12: number): number => {
   return faixa.aliq2Pct;
 };
 
-// 3.2 Calcular Percentual de Redução (PR)
-export const calcularPR = (aliq1ArredondadaPct: number, aliq2Pct: number): number => {
+// 3.2 Calcular Percentual de Redução (PR) - FLUXO DE PRECISÃO MISTA
+// Regra Inegociável:
+// Numerador: Usa ALIQ1 com precisão total.
+// Denominador: Usa ALIQ1 arredondada (2 casas).
+export const calcularPR = (
+  aliq1PrecisaoTotalPct: number, 
+  aliq1ArredondadaPct: number, 
+  aliq2Pct: number
+): number => {
+  
   if (aliq1ArredondadaPct === 0) return 0;
   
-  // PR = ((ALIQ1_arr - ALIQ2) * 100) / ALIQ1_arr
-  const numerador = (aliq1ArredondadaPct - aliq2Pct) * 100;
+  // Fórmula: ((ALIQ1_total - ALIQ2) * 100) / ALIQ1_arredondada
+  const numerador = (aliq1PrecisaoTotalPct - aliq2Pct) * 100;
   const pr = numerador / aliq1ArredondadaPct;
   
   return pr;
